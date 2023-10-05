@@ -1,0 +1,64 @@
+#^App.svelte&^<script>
+  import { onMount } from 'svelte';
+  import { get } from 'svelte/store';
+  import { names, selectedName } from './store.js';
+
+  onMount(async () => {
+    const response = await fetch('/api/names');
+    const data = await response.json();
+    names.set(data);
+  });
+
+  function selectName(name) {
+    selectedName.set(name);
+  }
+</script>
+
+<div class="flex">
+  <div class="w-1/4 bg-gray-200 p-4">
+    <h2 class="text-lg font-bold mb-4">Names</h2>
+    {#each $names as name}
+      <div class="cursor-pointer mb-2" on:click={() => selectName(name)}>
+        {name}
+      </div>
+    {/each}
+  </div>
+  <div class="w-3/4 p-4">
+    {#if $selectedName}
+      <NameDetails />
+    {/if}
+  </div>
+</div>
+
+<style>
+  .flex {
+    display: flex;
+  }
+  .bg-gray-200 {
+    background-color: #edf2f7;
+  }
+  .p-4 {
+    padding: 1rem;
+  }
+  .text-lg {
+    font-size: 1.125rem;
+  }
+  .font-bold {
+    font-weight: 700;
+  }
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+  .mb-2 {
+    margin-bottom: 0.5rem;
+  }
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  .w-1/4 {
+    width: 25%;
+  }
+  .w-3/4 {
+    width: 75%;
+  }
+</style>
