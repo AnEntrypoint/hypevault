@@ -1,14 +1,17 @@
 #^App.svelte&^<script>
+  // Import necessary modules from svelte and svelte/store
   import { onMount } from 'svelte';
   import { get } from 'svelte/store';
   import { names, selectedName } from './store.js';
-
+  
+  // Fetch names from the API on mount and set the names store
   onMount(async () => {
     const response = await fetch('/api/names');
     const data = await response.json();
     names.set(data);
   });
-
+  
+  // Function to set the selected name in the store
   function selectName(name) {
     selectedName.set(name);
   }
