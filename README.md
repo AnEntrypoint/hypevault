@@ -20,11 +20,15 @@ To set up the project, follow these steps:
 
 ## Usage
 
-To use the project, you need to generate a root keypair and derive keys from it. The keys are managed in the 'gui/src/stores.js' and 'gui/src/seed.js' files.
+To use the project, you first need to generate a root keypair. This can be done by using the `generateRootKeypair` function in the 'gui/src/seed.js' file. The function will return a root keypair which can be stored for later use.
+
+Once you have a root keypair, you can derive keys from it. This is done by using the `deriveKeys` function in the 'gui/src/stores.js' file. The function takes the root keypair as an argument and returns a set of derived keys.
 
 ## Server
 
-The server is set up in the 'api/server.js' file. It uses the 'nodes.js' file to create a vault.
+The server is set up in the 'api/server.js' file. To set up the server, you need to run the `setupServer` function in the 'api/server.js' file. The function takes the derived keys as an argument and sets up the server to use these keys.
+
+The 'nodes.js' file is used to create a vault. To create a vault, you need to run the `createVault` function in the 'nodes.js' file. The function takes the derived keys as an argument and creates a vault that can be used to store and manage the keys.
 
 ## Contributing
 
