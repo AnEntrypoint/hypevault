@@ -4,9 +4,10 @@ const init = node => {
     try {
       console.log(req.params.id);
       console.log(req.body);
-      req.body.rootKey.publicKey = Buffer.from(Object.values(req.body.rootKey.publicKey));
-      req.body.rootKey.secretKey = Buffer.from(Object.values(req.body.rootKey.secretKey));
-      const output = node.getSub(req.body.rootKey, req.params.id);
+      req.body.key.publicKey = Buffer.from(Object.values(req.body.key.publicKey));
+      if(req.body.key.secretKey) req.body.key.secretKey = Buffer.from(Object.values(req.body.key.secretKey));
+      if(req.body.key.scalar) req.body.key.scalar = Buffer.from(Object.values(req.body.key.scalar));
+      const output = node.getSub(req.body.key, req.params.id);
       if (typeof output == "object") res.write(JSON.stringify(output));
       else if (typeof output == "string") res.write(output);
       res.status(200).end()
@@ -16,7 +17,7 @@ const init = node => {
       res.status(500).end()
     }
   };
-  const findNodes = async (req, res) => {
+  const findHosts = async (req, res) => {
     try {
       console.log(req.params.id)
       console.log(req.body)
@@ -42,15 +43,39 @@ const init = node => {
       res.write(JSON.stringify(err));
       res.status(500).end()
     }
-  };
-  const startNode = (req, res) => {
+  }; 
+   const getNodes = async (req, res) => {
+    console.log('test');
     try {
-      req.body.hostKey.publicKey = Buffer.from(Object.values(req.body.hostKey.publicKey));
-      req.body.hostKey.secretKey = Buffer.from(Object.values(req.body.hostKey.secretKey));
-      const output = node.run(sub, "startNode", {
-        name: req.params.name
-      });
-      
+      console.log(req.params.id)
+      console.log(req.body)
+      req.body.hostKey.publicKey = Buffer.from(req.body.hostKey.publicKey, 'hex')
+      console.log(req.body.hostKey.publicKey.toString('hex'))
+      const kp = node.getSub({publicKey:req.body.hostKey.publicKey},'getNodes')
+      console.log({kp})
+      const output = await node.runKey(kp.publicKey, {});
+      console.log('output', output)
+      if (typeof output == "object") res.write(JSON.stringify(output))
+      else if (typeof output == "string") res.write(output)
+      res.status(200).end()
+    } catch (err) {
+      console.log(err)
+      res.write(JSON.stringify(err));
+      res.status(500).end()
+    }
+  };
+  const startNode = async (req, res) => {
+    try {
+      req.body.hostKey.publicKey = Buffer.from(req.body.hostKey.publicKey, 'hex')
+      console.log("BODY:",req.body)
+      req.body.sub = JSON.parse(req.body.sub)
+      req.body.sub.publicKey = Buffer.from(Object.values(req.body.sub.publicKey.data))
+      req.body.sub.scalar = Buffer.from(Object.values(req.body.sub.scalar.data))
+      const rootkp = node.getSub(req.body.sub)
+      const kp = node.getSub(req.body.hostKey,'startNode')
+      console.log({kp, rootkp})
+      const output = await node.runKey(kp.publicKey, {nodes:[{name:req.params.name, callKey:node.getSub(rootkp, req.params.name)}]});
+
       if (typeof output == "object") res.write(JSON.stringify(output));
       else if (typeof output == "string") res.write(output);
       res.status(200).end()
@@ -62,7 +87,9 @@ const init = node => {
   };
   const router = express.Router();
   router.get("/callNode/:name", startNode);
-  router.post("/findNodes/:name", findNodes);
+  router.post("/getNodes", getNodes);
+  router.post("/startNode/:name", startNode);
+  router.post("/findHosts/:id", findHosts);
   router.post("/getSub/:id", getSub);
   return router
 };
