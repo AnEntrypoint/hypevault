@@ -3,7 +3,6 @@ const init = node => {
   const getSub = async (req, res) => {
     try {
       console.log(req.params.id);
-      console.log(req.body);
       req.body.key.publicKey = Buffer.from(Object.values(req.body.key.publicKey));
       if(req.body.key.secretKey) req.body.key.secretKey = Buffer.from(Object.values(req.body.key.secretKey));
       if(req.body.key.scalar) req.body.key.scalar = Buffer.from(Object.values(req.body.key.scalar));
@@ -20,9 +19,6 @@ const init = node => {
   const findHosts = async (req, res) => {
     try {
       console.log(req.params.id)
-      console.log(req.body)
-      req.body.key.publicKey = Buffer.from(Object.values(req.body.key.publicKey.data))
-      console.log(req.body.key.publicKey.toString('hex'))
       const results = await node.lookup(req.body.key.publicKey.toString('hex'))
       const output = [];
       for (remote of results) {
@@ -47,12 +43,8 @@ const init = node => {
    const getNodes = async (req, res) => {
     console.log('test');
     try {
-      console.log(req.params.id)
-      console.log(req.body)
       req.body.hostKey.publicKey = Buffer.from(req.body.hostKey.publicKey, 'hex')
-      console.log(req.body.hostKey.publicKey.toString('hex'))
       const kp = node.getSub({publicKey:req.body.hostKey.publicKey},'getNodes')
-      console.log({kp})
       const output = await node.runKey(kp.publicKey, {});
       console.log('output', output)
       if (typeof output == "object") res.write(JSON.stringify(output))
@@ -67,13 +59,11 @@ const init = node => {
   const startNode = async (req, res) => {
     try {
       req.body.hostKey.publicKey = Buffer.from(req.body.hostKey.publicKey, 'hex')
-      console.log("BODY:",req.body)
       req.body.sub = JSON.parse(req.body.sub)
       req.body.sub.publicKey = Buffer.from(Object.values(req.body.sub.publicKey.data))
       req.body.sub.scalar = Buffer.from(Object.values(req.body.sub.scalar.data))
       const rootkp = node.getSub(req.body.sub)
       const kp = node.getSub(req.body.hostKey,'startNode')
-      console.log({kp, rootkp})
       const output = await node.runKey(kp.publicKey, {nodes:[{name:req.params.name, callKey:node.getSub(rootkp, req.params.name)}]});
 
       if (typeof output == "object") res.write(JSON.stringify(output));
