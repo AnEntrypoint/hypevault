@@ -17,15 +17,10 @@
             }
         });
         const sub = await subFetch.json();
-        function buf2hex(buffer) { // buffer is an ArrayBuffer
-            return [...new Uint8Array(buffer)]
-            .map(x => x.toString(16).padStart(2, '0'))
-            .join('')
-        } 
+        console.log(sub);
         console.log(sub.publicKey)
-        console.log(b4a.toBuffer(buf2hex(sub.publicKey.data), 'binary'))
 
-        const response = await fetch(`http://localhost:3011/vault/findHosts/${keyName}`, {
+        const response = await fetch(`http://localhost:3011/vault/findHosts`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -33,12 +28,11 @@
             body: JSON.stringify({ key:sub }),
         });
 
-        //const response = await fetch(`vault/findNodes/${keyName}`);
         const data = await response.json();
         console.log(data)
         hosts = data
-        //callNames = data;
     }
+    
     const getNodes =  async (host) => {
         const subFetch = await fetch(`http://localhost:3011/vault/getNodes`, {
             method: "POST",
@@ -66,7 +60,7 @@
             }
         });
 
-        const sub = await subFetch.text();
+        const sub = await subFetch.json();
         console.log(sub)
         const nodeFetch = await fetch(`http://localhost:3011/vault/startNode/`+nodename, {
             method: "POST",
