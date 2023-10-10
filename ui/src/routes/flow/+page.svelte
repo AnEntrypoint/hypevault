@@ -10,11 +10,22 @@
     let taskName
     const add = async () => {
       const newcalls = [...calls];
-      const subFetch = await fetch(
+      const keyFetch = await fetch(
           `http://localhost:3011/vault/getSub/${newName}`,
           {
             method: "POST",
             body: JSON.stringify({ key: { publicKey: pk } }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const key = await keyFetch.json();
+      const subFetch = await fetch(
+          `http://localhost:3011/vault/getSub/${newName}`,
+          {
+            method: "POST",
+            body: JSON.stringify({ key }),
             headers: {
               "Content-Type": "application/json",
             },
@@ -57,7 +68,7 @@
         );
         console.log('fetched')
         const sub = await subFetch.json();
-        const url = `https://localhost:3011/run/key/${sub.publicKey}`
+        const url = `http://localhost:3011/run/key/${sub.publicKey}`
         console.log({url})
         const fetched = await fetch(url, {
           headers: { "Content-Type": "application/json" },
@@ -70,7 +81,7 @@
       runCall(0, calls, {}, pk, ipcCall, ()=>refresh(calls))
     };
     const runOnServer = async (name) => {
-      const url = `https://localhost:3011/task/run/${pk}/${name}`
+      const url = `http://localhost:3011/task/run/${pk}/${name}`
   
       const fetched = await fetch(url, {
         headers: { "Content-Type": "application/json" },
@@ -83,7 +94,7 @@
     };
   
     const save = async (incalls, taskName) => {
-      const url = `https://localhost:3011/task/save/${taskName}`
+      const url = `http://localhost:3011/task/save/${taskName}`
       const fetched = await fetch(url, {
         headers: { "Content-Type": "application/json" },
         method: "POST",
@@ -92,7 +103,7 @@
       console.log(calls)
     };
     const load = async (taskName) => {
-      const url = `https://localhost:3011/task/load/${taskName}`
+      const url = `http://localhost:3011/task/load/${taskName}`
       const fetched = await fetch(url, { method: "GET" })
       const json = await fetched.json();
       console.log({json});

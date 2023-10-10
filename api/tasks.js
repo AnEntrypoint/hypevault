@@ -1,23 +1,24 @@
 const express = require('express')
-const {prepDb} = require('./stores.js')
+const { prepDb } = require('./stores.js')
 
 
 const init = (node) => {
 
   const saveTask = async (req, res) => {
-    await prepDb('./tasks')
-    console.log(req)
-    fs.writeFileSync(`saves/${req.params.name}.json`, JSON.stringify(req.body))
+    const db = await prepDb('./tasks')
+    console.log(req.body, req.params)
+    await db.put(req.params.name, JSON.stringify(req.body))
     res.write("{success:true}")
     res.status(200).end()
   };
 
   const loadTask = async (req, res) => {
-    await prepDb('./tasks')
+    const db = await prepDb('./tasks')
     console.log("loading task");
     try {
-      const name = `saves/${req.params.name}.json`;
-      res.write(fs.readFileSync(name));
+      const lookup = await db.get(req.params.name);
+      console.log(lookup.value.toString('utf-8'))
+      res.write(lookup.value)
       res.status(200).end();
     } catch (e) {
       console.error(e);
@@ -64,7 +65,7 @@ const init = (node) => {
       res.status(500).end();
     }
   };
-
+  console.log('tasks')
   const router = express.Router();
   router.get("/load/:name", loadTask);
   router.post("/run/:pk/:actionname", runTask);

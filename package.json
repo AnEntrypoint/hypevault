@@ -12,9 +12,5 @@
   "devDependencies": {
     "concurrently": "^8.2.1"
   },
-  "dependencies": {
-    "hyperbee": "^2.15.1",
-    "hypercore": "^10.28.11",
-    "hyperswarm": "^4.7.3"
-  }
+  "dependencies": {}
 }
