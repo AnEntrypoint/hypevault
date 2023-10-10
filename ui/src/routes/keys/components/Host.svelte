@@ -20,14 +20,22 @@
     })()
     const startNode = async ()=>{
 
-        const subFetch = await fetch(`http://localhost:3011/vault/getSub/${keyName}`, {
+        const keyFetch = await fetch(`http://localhost:3011/vault/getSub/${keyName}`, {
             method: "POST",
             body: JSON.stringify({ key:rootKey }),
             headers: {
                 "Content-Type": "application/json",
             }
-        });
+        })
+        const key = await keyFetch.json();
 
+        const subFetch = await fetch(`http://localhost:3011/vault/getSub/${keyName}`, {
+            method: "POST",
+            body: JSON.stringify({ key }),
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
         const sub = await subFetch.json();
         console.log(sub, host)
         const nodeFetch = await fetch(`http://localhost:3011/vault/startNode/`+nodename, {
