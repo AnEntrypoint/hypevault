@@ -45,7 +45,7 @@ const init = node => {
     console.log('test');
     try {
       const publicKey = Buffer.from(req.body.hostKey.publicKey, 'hex')
-      const sub = node.getSub({publicKey}, 'getNodes');
+      const sub = node.getSub({ publicKey }, 'getNodes');
       const output = await node.runKey(sub.publicKey, {});
       console.log('output', output)
       if (typeof output == "object") res.write(JSON.stringify(output))
@@ -59,10 +59,8 @@ const init = node => {
   const startNode = async (req, res) => {
     try {
       const publicKey = Buffer.from(req.body.hostKey.publicKey, 'hex')
-      req.body.sub.publicKey = Buffer.from(req.body.sub.publicKey, 'hex')
-      req.body.sub.scalar = Buffer.from(req.body.sub.scalar, 'hex')
-      const kp = node.getSub({publicKey}, 'startNode')
-      const output = await node.runKey(kp.publicKey, { nodes: [{ name: req.params.name, callKey: node.getSub(req.body.sub, req.params.name) }] });
+      const kp = node.getSub({ publicKey }, 'startNode')
+      const output = await node.runKey(kp.publicKey, { nodes: [{ name: req.params.name, callKey: req.body.sub }] });
       if (typeof output == "object") res.write(JSON.stringify(output));
       else if (typeof output == "string") res.write(output);
       res.status(200).end()

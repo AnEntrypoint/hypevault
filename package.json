@@ -4,12 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently --kill-others \"echo %cd% && cd gui && npm run dev\" \"cd api && nodemon server.js\""
+    "start": "concurrently --kill-others \"echo %cd% && cd ui && npm run dev\" \"cd api && nodemon server.js\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^8.2.1"
+  },
+  "dependencies": {
+    "hyperbee": "^2.15.1",
+    "hypercore": "^10.28.11",
+    "hyperswarm": "^4.7.3"
   }
 }
