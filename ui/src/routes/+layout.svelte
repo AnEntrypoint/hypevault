@@ -1,9 +1,12 @@
 <script>
+    // Importing the application's postcss file for styling
 	import '../app.postcss';
+    // Importing components from Skeleton UI library
 	import { AppShell, AppBar, AppRail, AppRailAnchor, AppRailTile } from '@skeletonlabs/skeleton';
 	let currentTile;
-	// Floating UI for Popups
+	// Importing modules from Floating UI library for creating and managing popups
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
+    // Importing the popup store from Skeleton UI library to manage popup state
 	import { storePopup } from '@skeletonlabs/skeleton';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 </script>
@@ -45,23 +48,31 @@
 
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">
-<AppRail>
-	<a href="/keys">
-	<AppRailTile name="vault" value={0} title="vault" group="0">
-		<span class="text-xl">🗝️</span>
-	</AppRailTile>
-	</a>
-	<a href="/flow">
-	<AppRailTile name="flow" value={1} title="flow" group="1">
-		<span class="text-xl">📋</span>
-	</AppRailTile>
-	</a>
-	<a href="/store">
-		<AppRailTile name="store" value={1} title="store" group="2">
-			<span class="text-xl">💽</span>
+	<AppRail>
+	    <!-- Constants for AppRailTile values and groups -->
+	    const VAULT_VALUE = 0;
+	    const FLOW_VALUE = 1;
+	    const STORE_VALUE = 1;
+	    const VAULT_GROUP = 0;
+	    const FLOW_GROUP = 1;
+	    const STORE_GROUP = 2;
+	
+		<a href="/keys">
+		<AppRailTile name="vault" value={VAULT_VALUE} title="vault" group={VAULT_GROUP}>
+			<span class="text-xl">🗝️</span>
 		</AppRailTile>
-	</a>
-</AppRail>
-</svelte:fragment>
+		</a>
+		<a href="/flow">
+		<AppRailTile name="flow" value={FLOW_VALUE} title="flow" group={FLOW_GROUP}>
+			<span class="text-xl">📋</span>
+		</AppRailTile>
+		</a>
+		<a href="/store">
+			<AppRailTile name="store" value={STORE_VALUE} title="store" group={STORE_GROUP}>
+				<span class="text-xl">💽</span>
+			</AppRailTile>
+		</a>
+	</AppRail>
+	</svelte:fragment>
 	<slot style="margin-top:50px" />
 </AppShell>
