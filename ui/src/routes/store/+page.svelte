@@ -2,18 +2,32 @@
     import { Accordion, AccordionItem } from '@skeletonlabs/skeleton'
     import Store from './Store.svelte'
     import storedata from '$lib/stores.js'
-    let stores = ['tasks']
-    console.log(stores);
-    let newStoreName;
+    let stores = [];
+    (async()=>{
+        const url = `http://localhost:3011/store/key/tasks`
+        const fetched = await fetch(url, { method: "GET" })
+        const json = await fetched.json();
+        stores = [...stores,{name:'tasks', publicKey:json.publicKey}]
+    })();
+    let newStoreName
     let selectedStore;
-    storedata.subscribe((a)=>{
+    storedata.subscribe(async (a)=>{
         if(a && a.length) {
-            stores = [...stores,...JSON.parse(a)]
-            console.log(stores);
+            try {
+                JSON.parse(a).forEach(async n=>{
+                    const url = `http://localhost:3011/store/key/${n}`
+                    console.log(n)
+                    const fetched = await fetch(url, { method: "GET" })
+                    const json = await fetched.json();
+                    stores = [...stores,{name:n, publicKey:json.publicKey}]
+                })
+            } catch(e) {
+                console.error(e)
+            }
         }
     })
     const addNewStore =()=>{
-        stores =  [...stores, newStoreName]
+        stores =  [...stores, {name:newStoreName}]
         storedata.set(JSON.stringify(stores))
         console.log(stores);
     }
@@ -27,12 +41,10 @@
         on:click={addNewStore}>Create Store</button>
     <Accordion>
         {#each stores as store, index}
-            {store}
-            {index}
             <AccordionItem bind:group={selectedStore} name="{index}" value="{store}">
                 <svelte:fragment slot="lead">🗝️</svelte:fragment>
-                <svelte:fragment slot="summary">{store}</svelte:fragment>
-                <svelte:fragment slot="content"><Store name={store}></Store></svelte:fragment>
+                <svelte:fragment slot="summary">{store.name} </svelte:fragment>
+                <svelte:fragment slot="content"><Store name={store.name} publicKey={store.publicKey}></Store></svelte:fragment>
             </AccordionItem>
         {/each}
     </Accordion>

@@ -1,7 +1,7 @@
 const Hyperbee = require('hyperbee')
 const Hypercore = require('hypercore')
 const Hyperswarm = require('hyperswarm')
-
+const express = require('express')
 const dbs = []
 
 const prepDb = async (name) => {
@@ -16,7 +16,7 @@ const prepDb = async (name) => {
     return db
 }
 
-const init = (node) => {
+const init = () => {
 
     const save = async (req, res) => {
         const db = await prepDb('./' + req.params.db)
@@ -26,7 +26,16 @@ const init = (node) => {
         res.status(200).end()
     };
 
+    const key = async (req, res) => {
+        console.log('key')
+        const db = await prepDb('./' + req.params.db)
+        const out = db.core.key  
+        console.log({publicKey:out.toString('hex')})
+        res.write(JSON.stringify({publicKey:out.toString('hex')}))
+        res.status(200).end() 
+    }
     const load = async (req, res) => {
+        console.log('load')
         const db = await prepDb('./' + req.params.db)
         try {
             const lookup = await db.get(req.params.name);
@@ -41,9 +50,31 @@ const init = (node) => {
             res.status(500).end();
         }
     };
-    router.get("/load/:name", load);
+    const loadAll = async (req, res) => {
+        console.log('loadAll')
+        const db = await prepDb('./' + req.params.db)
+        try {
+            const lookup = { values: {} };
+            for await (const node of db.createReadStream()) {
+                console.log(node)
+                lookup.values[node.key] =node.value.toString()
+            }
+            console.log(lookup)
+            res.write(JSON.stringify(lookup))
+            res.status(200).end();
+        } catch (e) {
+            console.error(e);
+            res.write(JSON.stringify({
+                error: e
+            }));
+            res.status(500).end();
+        }
+    };
+    const router = express.Router();
+    router.get("/load/:db/:name", load);
+    router.get("/loadAll/:db", loadAll);
+    router.get("/key/:db", key);
     router.post("/save/:name", save);
-    console.log('stores')
     return router;
 }
 

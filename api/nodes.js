@@ -60,7 +60,7 @@ const init = node => {
     try {
       const publicKey = Buffer.from(req.body.hostKey.publicKey, 'hex')
       const kp = node.getSub({ publicKey }, 'startNode')
-      const output = await node.runKey(kp.publicKey, { nodes: [{ name: req.params.name, callKey: req.body.sub }] });
+      const output = await node.runKey(kp.publicKey, { nodes: [{ name: req.params.name, callKey: req.body.sub, env:req.body.env }] });
       if (typeof output == "object") res.write(JSON.stringify(output));
       else if (typeof output == "string") res.write(output);
       res.status(200).end()

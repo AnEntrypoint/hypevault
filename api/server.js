@@ -52,7 +52,7 @@ const vault = nodes(node)
 console.log(vault)
 app.use("/vault", vault)
 app.use("/task", tasks(node))
-app.use("/stores", stores)
+app.use("/store", stores())
 app.use("/run", run(node))
 app.use(express.static('public'))
 app.listen(port, (() => {
