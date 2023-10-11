@@ -22,7 +22,7 @@
         );
         const key = await keyFetch.json();
       const subFetch = await fetch(
-          `http://localhost:3011/vault/getSub/${newName}`,
+          `http://localhost:3011/vault/getSub/call-${newName}`,
           {
             method: "POST",
             body: JSON.stringify({ key }),
@@ -94,7 +94,7 @@
     };
   
     const save = async (incalls, taskName) => {
-      const url = `http://localhost:3011/task/save/${taskName}`
+      const url = `http://localhost:3011/store/save/task/${taskName}`
       const fetched = await fetch(url, {
         headers: { "Content-Type": "application/json" },
         method: "POST",
@@ -103,7 +103,7 @@
       console.log(calls)
     };
     const load = async (taskName) => {
-      const url = `http://localhost:3011/task/load/${taskName}`
+      const url = `http://localhost:3011/store/load/task/${taskName}`
       const fetched = await fetch(url, { method: "GET" })
       const json = await fetched.json();
       console.log({json});

@@ -5,7 +5,7 @@ const express = require('express')
  * @returns {Object} - The router object.
  */
 const init = (node) => {
-  
+
   const runKey = async (req, res) => {
     console.log("run called");
     let body = req.body;
@@ -38,7 +38,7 @@ const init = (node) => {
       res.status(500).end();
     }
   };
-  
+
   const findKey = async (req, res) => {
     console.log("find called", req.params);
     try {
@@ -66,9 +66,5 @@ const init = (node) => {
   router.post("/key/:pk", runKey);
   return router;
 };
-process.on('unhandledException', (reason, promise) => {
-  console.log('Unhandled Rejection at:', reason.stack || reason)
-  // Recommended: send the information to sentry.io
-  // or whatever crash reporting service you use
-})
+
 module.exports = init;

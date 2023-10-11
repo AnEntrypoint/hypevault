@@ -67,9 +67,7 @@ const init = (node) => {
   };
   console.log('tasks')
   const router = express.Router();
-  router.get("/load/:name", loadTask);
   router.post("/run/:pk/:actionname", runTask);
-  router.post("/save/:name", saveTask);
   return router;
 };
 
