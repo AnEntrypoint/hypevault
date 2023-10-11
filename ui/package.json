@@ -3,11 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "vite dev",
     "build": "vite build",
-    "preview": "vite preview",
+    "dev": "vite dev",
+    "format": "prettier --plugin-search-dir . --write .",
     "lint": "prettier --plugin-search-dir . --check .",
-    "format": "prettier --plugin-search-dir . --write ."
+    "preview": "vite preview"
   },
   "devDependencies": {
     "@skeletonlabs/skeleton": "2.2.0",
