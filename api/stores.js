@@ -74,7 +74,7 @@ const init = () => {
     router.get("/load/:db/:name", load);
     router.get("/loadAll/:db", loadAll);
     router.get("/key/:db", key);
-    router.post("/save/:name", save);
+    router.post("/save/:db/:name", save);
     return router;
 }
 
