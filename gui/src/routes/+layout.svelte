@@ -5,11 +5,11 @@
 </script>
 
 <!-- App Shell -->
-<div>
-	<div class="hidden md:block">
-		<div class="border-t">
-			<div class="bg-background">
-				<div class="grid lg:grid-cols-7">
+<div class="h-full w-full">
+	<div class="hidden md:block h-full w-full">
+		<div class="border-t h-full w-full">
+			<div class="bg-background h-full w-full">
+				<div class="flex h-full w-full">
 					<div class="pb-12 sidebar">
 						<div class="space-y-4 py-4">
 							<a href="/keys">
@@ -98,8 +98,9 @@
 							</a>
 						</div>
 					</div>
-
-					<slot />
+					<div class="w-full pb-10">
+						<slot />
+					</div>
 				</div>
 			</div>
 		</div>

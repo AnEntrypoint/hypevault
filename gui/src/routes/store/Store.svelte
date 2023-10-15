@@ -1,4 +1,5 @@
 <script>
+	import * as Table from '$lib/components/ui/table';
 	let newKey, newValue;
 	export let name;
 	export let publicKey;
@@ -10,7 +11,7 @@
 		const json = await fetched.json();
 		sourceData = { ...json.values };
 	})();
-
+	const deleteValue = () => {};
 	const saveValue = () => {};
 </script>
 
@@ -24,7 +25,28 @@
 		on:click={saveValue}>Save</button
 	>
 	<h1 class="text-lg">Store: {name}</h1>
-	<pre>
-        {JSON.stringify(sourceData, null, 2)}
-    </pre>
+	<Table.Root>
+		<Table.Caption>Environment Variables.</Table.Caption>
+		<Table.Header>
+			<Table.Row>
+				<Table.Head class="w-[100px]">Key</Table.Head>
+				<Table.Head>Value</Table.Head>
+				<Table.Head class="text-right">Actions</Table.Head>
+			</Table.Row>
+		</Table.Header>
+		<Table.Body>
+			{#each Object.keys(sourceData) as key, i (i)}
+				<Table.Row>
+					<Table.Cell class="font-medium">{key}</Table.Cell>
+					<Table.Cell>{sourceData[key]}</Table.Cell>
+					<Table.Cell class="text-right">
+						<button
+							class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-green-600 m-2"
+							on:click={deleteValue}>Delete</button
+						>
+					</Table.Cell>
+				</Table.Row>
+			{/each}
+		</Table.Body>
+	</Table.Root>
 </div>
