@@ -1,24 +1,21 @@
 <script>
-    export let addKey;
+	export let addKey;
+	import { Input } from '$lib/components/ui/input';
+	import { Button } from '$lib/components/ui/button';
 
-    let newKeyName = "";
+	let newKeyName = '';
 
-    function addNewKey() {
-        if (newKeyName) {
-            addKey(newKeyName); // Call the addKey action with the new key name
-            newKeyName = ""; // Reset the input field after adding the key
-        }
-    }
+	function addNewKey() {
+		if (newKeyName) {
+			addKey(newKeyName);
+			newKeyName = '';
+		}
+	}
 </script>
 
 <div>
-    <input
-        type="text"
-        bind:value={newKeyName}
-        class="input max-w-lg m-2"
-        placeholder="Enter a key name"
-    />
-    <button
-        class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 m-2"
-        on:click={addNewKey}>Add Key</button>
+    <div class="flex items-center space-x-4 m-4">
+	<Input type="text" bind:value={newKeyName} class="max-w-sm" placeholder="Enter a key name" />
+	<Button on:click={addNewKey}>Add Key</Button>
+    </div>
 </div>

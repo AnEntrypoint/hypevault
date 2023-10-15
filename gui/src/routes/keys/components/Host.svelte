@@ -1,24 +1,23 @@
 <script>
 	import * as Table from '$lib/components/ui/table';
+	import { Input } from '$lib/components/ui/input';
+	import { Button } from '$lib/components/ui/button';
 	let newKey, newValue;
 	let nodes = [];
 	let nodename;
-	let selectedKey;
 	export let keyName = '';
 	export let rootKey;
 	export let host;
 
 	let sourceData = {};
-	const handleSelectedKey = (inp) => {
-		selectedKey = inp.detail[0];
-	};
+
 	const saveValue = () => {
 		const output = { ...sourceData };
 		output[newKey] = newValue;
 		sourceData = output;
 		console.log(sourceData);
 	};
-	const deleteValue = () => {
+	const deleteValue = (selectedKey) => {
 		console.log('test');
 		const output = { ...sourceData };
 		delete output[selectedKey];
@@ -26,58 +25,59 @@
 		console.log(sourceData);
 	};
 	const getNodes = async (host) => {
-		const nodesFetch = await fetch(`http://localhost:3011/vault/getNodes`, {
-			method: 'POST',
-			body: JSON.stringify({ hostKey: { publicKey: host } }),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
-		return await nodesFetch.json();
+		const nodesFetch = await (
+			await fetch(`http://localhost:3011/vault/getNodes`, {
+				method: 'POST',
+				body: JSON.stringify({ hostKey: { publicKey: host } }),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+		).json();
+		return nodesFetch;
 	};
 	(async () => {
 		nodes = (await getNodes(host)).nodes;
 	})();
 	const startNode = async () => {
-		const keyFetch = await fetch(`http://localhost:3011/vault/getSub/${keyName}`, {
-			method: 'POST',
-			body: JSON.stringify({ key: rootKey }),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
-		const key = await keyFetch.json();
+		const keyFetch = await (
+			await fetch(`http://localhost:3011/vault/getSub/${keyName}`, {
+				method: 'POST',
+				body: JSON.stringify({ key: rootKey }),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+		).json();
+		const key = keyFetch;
 
-		const subFetch = await fetch(`http://localhost:3011/vault/getSub/call-${keyName}`, {
-			method: 'POST',
-			body: JSON.stringify({ key }),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
-		const sub = await subFetch.json();
+		const sub = await (
+			await fetch(`http://localhost:3011/vault/getSub/call-${keyName}`, {
+				method: 'POST',
+				body: JSON.stringify({ key }),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+		).json();
 		console.log({ sourceData });
-		const nodeFetch = await fetch(`http://localhost:3011/vault/startNode/` + nodename, {
-			method: 'POST',
-			body: JSON.stringify({ hostKey: { publicKey: host }, sub, env: sourceData }),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
+		const nodeFetch = await (
+			await fetch(`http://localhost:3011/vault/startNode/` + nodename, {
+				method: 'POST',
+				body: JSON.stringify({ hostKey: { publicKey: host }, sub, env: sourceData }),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+		).json();
 		return nodeFetch;
 	};
 </script>
 
 <div class="variant-filled-surface rounded-b-lg p-4">
-	<input class="input max-w-sm" placeholder="env" bind:value={newKey} />
-	<input class="input max-w-sm" placeholder="value" bind:value={newValue} />
-	<button
-		class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 m-2"
-		on:click={saveValue}>Save</button
-	>
-	{#key sourceData}
-		{#if Object.keys(sourceData).length}{/if}
-	{/key}
+	<Input class="input max-w-sm" placeholder="env" bind:value={newKey} />
+	<Input class="input max-w-sm" placeholder="value" bind:value={newValue} />
+	<Button on:click={saveValue}>Save</Button>
 	<Table.Root>
 		<Table.Caption>Environment Variables.</Table.Caption>
 		<Table.Header>
@@ -95,7 +95,9 @@
 					<Table.Cell class="text-right">
 						<button
 							class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-green-600 m-2"
-							on:click={deleteValue}>Delete</button
+							on:click={() => {
+								deleteValue(key);
+							}}>Delete</button
 						>
 					</Table.Cell>
 				</Table.Row>
@@ -103,16 +105,13 @@
 		</Table.Body>
 	</Table.Root>
 
-	<input
+	<Input
 		type="text"
 		bind:value={nodename}
 		class="input max-w-xl m-4"
 		placeholder="Enter a node name"
 	/>
-	<button
-		class="bg-green-500 text-white px-4 py-2 m-4 rounded-md hover:bg-green-600"
-		on:click={startNode}>Start Node on host</button
-	>
+	<Button on:click={startNode}>Start Node on host</Button>
 	{#if nodes.length}
 		<h1 class="max-w-xl text-lg m-4">Running:</h1>
 		{#each nodes as node, i}

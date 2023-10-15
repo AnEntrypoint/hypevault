@@ -13,8 +13,8 @@
 					<div class="pb-12 sidebar">
 						<div class="space-y-4 py-4">
 							<a href="/keys">
-								<div class="px-3 py-2">
-									<h2 class="mb-2 px-4 text-lg font-semibold tracking-tight">
+								<div class="px-2 py-2">
+									<h2 class="mb-2 px-2 text-lg font-semibold tracking-tight">
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
 											xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -37,8 +37,8 @@
 								</div>
 							</a>
 							<a href="/flow">
-								<div class="px-3 py-2">
-									<h2 class="mb-2 px-4 text-lg font-semibold tracking-tight">
+								<div class="px-2 py-2">
+									<h2 class="mb-2 px-2 text-lg font-semibold tracking-tight">
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
 											xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -69,8 +69,8 @@
 								</div>
 							</a>
 							<a href="/store">
-								<div class="px-3 py-2">
-									<h2 class="mb-2 px-4 text-lg font-semibold tracking-tight">
+								<div class="px-2 py-2">
+									<h2 class="mb-2 px-2 text-lg font-semibold tracking-tight">
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
 											fill="#aaaaaa"
