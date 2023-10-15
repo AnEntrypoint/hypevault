@@ -3,7 +3,6 @@
 	import Hosts from './components/Hosts.svelte';
 	import AddKey from './components/AddKey.svelte';
 	import rootKey from '../../lib/seed.js';
-	import { json } from '@codemirror/lang-json';
 	import keystore from '$lib/keys.js';
 	let keys = [];
 	keystore.subscribe((a) => {

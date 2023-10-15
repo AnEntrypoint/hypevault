@@ -1,6 +1,7 @@
 <script>
 	import { Svelvet, ThemeToggle } from 'svelvet';
 	import { Input } from '$lib/components/ui/input';
+	import { Button } from '$lib/components/ui/button';
 	import Call from './Call.svelte';
 	import { runCall } from 'hypeeval';
 	import rootKey from '../../lib/seed.js';
@@ -116,39 +117,38 @@
 
 <div>
 	<section class="flex">
-		<button
+		<span
 			on:click|stopPropagation={() => {
 				run(calls);
 			}}
-			class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">TEST</button
 		>
+			<Button>TEST</Button>
+		</span>
 		<Input placeholder="Task name" bind:value={taskName} style="max-width:10em" class="input" />
-		<button
+		<span
 			on:click|stopPropagation={() => {
 				save(calls, taskName);
 			}}
-			class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">SAVE</button
 		>
-		<button
+			<Button>SAVE</Button>
+		</span>
+		<span
 			on:click|stopPropagation={() => {
 				runOnServer(taskName);
 			}}
-			class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
 		>
-			RUN
-		</button>
-		<button
+			<Button>RUN</Button>
+		</span>
+		<span
 			on:click|stopPropagation={() => {
 				load(taskName);
 			}}
-			class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
 		>
-			LOAD
-		</button>
-		<button
-			class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-			on:click|stopPropagation={add}>+</button
-		>
+			<Button>LOAD</Button>
+		</span>
+		<span on:click|stopPropagation={add}>
+			<Button>+</Button>
+		</span>
 		<Input
 			placeholder="new ipc call name"
 			bind:value={newName}

@@ -1,29 +1,41 @@
 <script>
 	import * as Table from '$lib/components/ui/table';
+	import { Input } from '$lib/components/ui/input';
+	import { Button } from '$lib/components/ui/button';
 	let newKey, newValue;
 	export let name;
 	export let publicKey;
 
 	let sourceData = {};
 	(async () => {
-		const url = `http://localhost:3011/store/loadAll/${name}`;
-		const fetched = await fetch(url, { method: 'GET' });
-		const json = await fetched.json();
+		const json = await (
+			await fetch(`http://localhost:3011/store/loadAll/${name}`, { method: 'GET' })
+		).json();
 		sourceData = { ...json.values };
 	})();
-	const deleteValue = () => {};
-	const saveValue = () => {};
+	const deleteValue = (selectedKey) => {
+		console.log('test');
+		const output = { ...sourceData };
+		delete output[selectedKey];
+		sourceData = output;
+		console.log(sourceData);
+	};
+	const saveValue = () => {
+		const output = { ...sourceData };
+		output[newKey] = newValue;
+		sourceData = output;
+		console.log(sourceData);
+	};
 </script>
 
 <div>
 	<h1 class="text-lg">Replication key:</h1>
 	<div>{publicKey}</div>
-	<input class="input max-w-md" placeholder="key" bind:value={newKey} />
-	<input class="input max-w-lg" placeholder="value" bind:value={newValue} />
-	<button
-		class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 m-4"
-		on:click={saveValue}>Save</button
-	>
+	<div class="flex items-center space-x-4 m-4">
+		<Input class="input max-w-md" placeholder="key" bind:value={newKey} />
+		<Input class="input max-w-lg" placeholder="value" bind:value={newValue} />
+	</div>
+	<Button on:click={saveValue}>Save</Button>
 	<h1 class="text-lg">Store: {name}</h1>
 	<Table.Root>
 		<Table.Caption>Environment Variables.</Table.Caption>
@@ -40,9 +52,10 @@
 					<Table.Cell class="font-medium">{key}</Table.Cell>
 					<Table.Cell>{sourceData[key]}</Table.Cell>
 					<Table.Cell class="text-right">
-						<button
-							class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-green-600 m-2"
-							on:click={deleteValue}>Delete</button
+						<Button
+							on:click={() => {
+								deleteValue(key);
+							}}>Delete</Button
 						>
 					</Table.Cell>
 				</Table.Row>
