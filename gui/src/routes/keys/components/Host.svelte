@@ -53,7 +53,7 @@
 		const key = keyFetch;
 	
 		const sub = await (
-			await fetch(`http://localhost:3011/vault/getSub/call-${keyName}`, {
+			await fetch(`http://localhost:3011/vault/getSub/call-${nodename}`, {
 				method: 'POST',
 				body: JSON.stringify({ key }),
 				headers: {
@@ -63,7 +63,7 @@
 		).json();
 		console.log({ sourceData });
 		const nodeFetch = await (
-			await fetch(`http://localhost:3011/vault/startNode/` + keyName, {
+			await fetch(`http://localhost:3011/vault/startNode/` + nodename, {
 				method: 'POST',
 				body: JSON.stringify({ hostKey: { publicKey: host }, sub, env: sourceData }),
 				headers: {
