@@ -5,51 +5,31 @@
 	import { rootKey } from '../../../lib/seed.js';
 	import Call from '../../flow/components/Call.svelte';
 	import { Svelvet, ThemeToggle } from 'svelvet';
+	import { isJSON, isTask } from './utils.js'; // Import utility functions
+	import { BASE_URL } from '../../../config.js'; // Import base URL from config file
 	let pk = rootKey.publicKey;
 	let newKey, newValue;
 	export let name;
 	export let publicKey;
 
 	let sourceData = {};
-	function isJSON(item) {
-		let value = typeof item !== 'string' ? JSON.stringify(item) : item;
-		try {
-			value = JSON.parse(value);
-		} catch (e) {
-			return false;
-		}
-
-		return typeof value === 'object' && value !== null;
-	}
-	function isTask(items) {
-		if (!Array.isArray(items)) return false;
-		for (let i of items) {
-			if (typeof i.name != 'string') return;
-			if (typeof i.before != 'string') return;
-			if (typeof i.after != 'string') return;
-			if (!Array.isArray(items)) return;
-			if (typeof i.sub != 'object') return;
-		}
-		return true;
-	}
 	(async () => {
 		const json = await (
-			await fetch(`http://localhost:3011/store/loadAll/${name}`, { method: 'GET' })
+			await fetch(`${BASE_URL}/store/loadAll/${name}`, { method: 'GET' }) // Use base URL from config file
 		).json();
 		sourceData = { ...json.values };
 	})();
+	// Function to delete a value from the source data
 	const deleteValue = (selectedKey) => {
-		console.log('test');
 		const output = { ...sourceData };
 		delete output[selectedKey];
 		sourceData = output;
-		console.log(sourceData);
 	};
+	// Function to save a new value to the source data
 	const saveValue = () => {
 		const output = { ...sourceData };
 		output[newKey] = newValue;
 		sourceData = output;
-		console.log(sourceData);
 	};
 </script>
 
