@@ -55,8 +55,9 @@
 
 <div class="m-4">
 	<h1 class="text-lg">Replication env:</h1>
-	
+	<div>
 		publicKey <code class="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">{publicKey}</code>
+	</div>
 	
 	<div class="flex items-center space-x-4 m-4">
 		<Input class="input max-w-xs" placeholder="key" bind:value={newKey} />
