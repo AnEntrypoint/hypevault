@@ -8,7 +8,7 @@ const init = (node) => {
     const db = await prepDb('./tasks')
     console.log(req.body, req.params)
     await db.put(req.params.name, JSON.stringify(req.body))
-    res.write("{success:true}")
+    res.write(`{"success":"true"}`)
     res.status(200).end()
   };
 

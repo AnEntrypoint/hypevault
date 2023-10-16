@@ -2,7 +2,7 @@
 	import * as Accordion from '$lib/components/ui/accordion';
 	import Hosts from './components/Hosts.svelte';
 	import AddKey from './components/AddKey.svelte';
-	import rootKey from '../../lib/seed.js';
+	import { rootKey } from '../../lib/seed.js';
 	import keystore from '$lib/keys.js';
 	let keys = [];
 	keystore.subscribe((a) => {
@@ -17,20 +17,17 @@
 	}
 </script>
 
-<div class="flex">
-	<!-- Left Section: List of Keys -->
-	<div class="p-4 w-full">
-		<h2 class="text-lg font-semibold mb-4">Keys</h2>
-		<AddKey addKey={addNewKey} />
-		<Accordion.Root>
-			{#each keys as key, index}
-				<Accordion.Item bind:group={selectedKey} name={index} value={key}>
-					<Accordion.Trigger>🗝️{key}</Accordion.Trigger>
-					<Accordion.Content>
-						<Hosts {rootKey} keyName={key} />
-					</Accordion.Content>
-				</Accordion.Item>
-			{/each}
-		</Accordion.Root>
-	</div>
-</div>
+<section class="py-4 lg:px-12 md:px-8">
+	<h2 class="text-lg font-semibold mb-4">Networks</h2>
+	<AddKey addKey={addNewKey} />
+	<Accordion.Root>
+		{#each keys as key, index}
+			<Accordion.Item bind:group={selectedKey} name={index} value={key}>
+				<Accordion.Trigger>🗝️{key}</Accordion.Trigger>
+				<Accordion.Content>
+					<Hosts {rootKey} keyName={key} />
+				</Accordion.Content>
+			</Accordion.Item>
+		{/each}
+	</Accordion.Root>
+</section>

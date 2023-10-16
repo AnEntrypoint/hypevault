@@ -25,6 +25,7 @@
 		console.log(sourceData);
 	};
 	const getNodes = async (host) => {
+		console.log({ host });
 		const nodesFetch = await (
 			await fetch(`http://localhost:3011/vault/getNodes`, {
 				method: 'POST',
@@ -75,15 +76,17 @@
 </script>
 
 <div class="variant-filled-surface rounded-b-lg p-4">
-	<Input class="input max-w-sm" placeholder="env" bind:value={newKey} />
-	<Input class="input max-w-sm" placeholder="value" bind:value={newValue} />
-	<Button on:click={saveValue}>Save</Button>
+	<div class="flex">
+		<Input class="input max-w-xs m-2" placeholder="env" bind:value={newKey} />
+		<Input class="input max-w-sm m-2" placeholder="value" bind:value={newValue} />
+		<Button on:click={saveValue} class="m-2">Save</Button>
+	</div>
 	<Table.Root>
 		<Table.Caption>Environment Variables.</Table.Caption>
 		<Table.Header>
 			<Table.Row>
-				<Table.Head class="w-[100px]">Key</Table.Head>
-				<Table.Head>Value</Table.Head>
+				<Table.Head>Key</Table.Head>
+				<Table.Head class="w-full">Value</Table.Head>
 				<Table.Head class="text-right">Actions</Table.Head>
 			</Table.Row>
 		</Table.Header>
@@ -112,7 +115,7 @@
 		placeholder="Enter a node name"
 	/>
 	<Button on:click={startNode}>Start Node on host</Button>
-	{#if nodes.length}
+	{#if nodes}
 		<h1 class="max-w-xl text-lg m-4">Running:</h1>
 		{#each nodes as node, i}
 			<div class="varian-ghost-surface">

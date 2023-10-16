@@ -1,45 +1,17 @@
 <script>
 	import { Svelvet, ThemeToggle } from 'svelvet';
-	import { Input } from '$lib/components/ui/input';
-	import { Button } from '$lib/components/ui/button';
-	import Call from './Call.svelte';
+	import Options from './components/Options.svelte';
+	import Storage from './components/Storage.svelte';
+	import Create from './components/Create.svelte';
+	import Call from './components/Call.svelte';
 	import { runCall } from 'hypeeval';
-	import rootKey from '../../lib/seed.js';
+	import { rootKey } from '../../lib/seed.js';
+	let selectedKey;
+
 	let pk = rootKey.publicKey;
 	let calls = [];
-	let newName;
-	let taskName;
-	const add = async () => {
+	const refresh = () => {
 		const newcalls = [...calls];
-		const keyFetch = await fetch(`http://localhost:3011/vault/getSub/${newName}`, {
-			method: 'POST',
-			body: JSON.stringify({ key: { publicKey: pk } }),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
-		const key = await keyFetch.json();
-		const subFetch = await fetch(`http://localhost:3011/vault/getSub/call-${newName}`, {
-			method: 'POST',
-			body: JSON.stringify({ key }),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
-		const sub = await subFetch.json();
-		console.log({ sub });
-		newcalls.push({
-			name: newName,
-			before: "console.log('before:', params);",
-			after: "console.log('after', out);",
-			output: [],
-			sub: { publicKey: sub.publicKey }
-		});
-		console.log(newcalls);
-		calls = newcalls;
-	};
-	const refresh = (incalls) => {
-		const newcalls = [...incalls];
 		calls = newcalls;
 	};
 	function remove(index) {
@@ -84,22 +56,6 @@
 		calls = output;
 	};
 
-	const save = async (incalls, taskName) => {
-		const url = `http://localhost:3011/store/save/task/${taskName}`;
-		const fetched = await fetch(url, {
-			headers: { 'Content-Type': 'application/json' },
-			method: 'POST',
-			body: JSON.stringify(incalls)
-		});
-		console.log(calls);
-	};
-	const load = async (taskName) => {
-		const url = `http://localhost:3011/store/load/task/${taskName}`;
-		const fetched = await fetch(url, { method: 'GET' });
-		const json = await fetched.json();
-		console.log({ json });
-		refresh(json);
-	};
 	function handleConnection(event) {
 		const outsplit = event.detail.targetNode.id.split('-');
 		console.log({ outsplit });
@@ -115,68 +71,31 @@
 	}
 </script>
 
-<div>
-	<section class="flex">
-		<span
-			on:click|stopPropagation={() => {
-				run(calls);
-			}}
-		>
-			<Button>TEST</Button>
-		</span>
-		<Input placeholder="Task name" bind:value={taskName} style="max-width:10em" class="input" />
-		<span
-			on:click|stopPropagation={() => {
-				save(calls, taskName);
-			}}
-		>
-			<Button>SAVE</Button>
-		</span>
-		<span
-			on:click|stopPropagation={() => {
-				runOnServer(taskName);
-			}}
-		>
-			<Button>RUN</Button>
-		</span>
-		<span
-			on:click|stopPropagation={() => {
-				load(taskName);
-			}}
-		>
-			<Button>LOAD</Button>
-		</span>
-		<span on:click|stopPropagation={add}>
-			<Button>+</Button>
-		</span>
-		<Input
-			placeholder="new ipc call name"
-			bind:value={newName}
-			style="max-width:10em"
-			class="input"
-		/>
+<section class="h-full pb-28">
+	<section class="flex pb-2 px-4">
+		<Options bind:selectedKey />
+		<Storage bind:calls />
+		<Create bind:calls {pk} {selectedKey} />
 	</section>
-</div>
-<Svelvet minimap controls on:connection={handleConnection}>
-	{#each calls as { name, before, after, output, stdout, stderr, result, sub }, index}
-		<Call
-			id={'call-' + index}
-			bind:name
-			bind:before
-			bind:after
-			output={output.map((a) => 'call-' + a)}
-			{stdout}
-			{stderr}
-			{result}
-			{sub}
-			{remove}
-			{pk}
-			x={index * 1200}
-			y={250}
-		/>
-	{/each}
-	<ThemeToggle main="dark" alt="light" slot="toggle" />
-</Svelvet>
-
-<style>
-</style>
+	<Svelvet minimap controls on:connection={handleConnection}>
+		{#each calls as { name, before, after, output, stdout, stderr, result, sub, x, y }, index}
+			<Call
+				id={'call-' + index}
+				bind:name
+				bind:before
+				bind:after
+				output={output.map((a) => 'call-' + a)}
+				{selectedKey}
+				{stdout}
+				{stderr}
+				{result}
+				{sub}
+				{remove}
+				{pk}
+				bind:x
+				bind:y
+			/>
+		{/each}
+		<ThemeToggle main="dark" alt="light" slot="toggle" />
+	</Svelvet>
+</section>
