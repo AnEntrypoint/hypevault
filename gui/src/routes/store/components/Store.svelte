@@ -54,6 +54,7 @@
 </script>
 
 <div class="m-4">
+	<!-- Heading displaying the details of the replication environment -->
 	<h1 class="text-lg">Replication env:</h1>
 	
 		publicKey <code class="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">{publicKey}</code>
@@ -63,6 +64,7 @@
 		<Input class="input max-w-sm" placeholder="value" bind:value={newValue} />
 		<Button on:click={saveValue}>Save</Button>
 	</div>
+	<!-- Heading displaying the name of the current store -->
 	<h1 class="text-lg">Store: {name}</h1>
 	<Table.Root>
 		<Table.Caption>Environment Variables.</Table.Caption>
