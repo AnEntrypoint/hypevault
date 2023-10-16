@@ -54,7 +54,7 @@
 	</Sheet.Trigger>
 	<Sheet.Content side="right">
 		<Sheet.Header>
-			<Sheet.Title>Save</Sheet.Title>
+			<Sheet.Title>Storage</Sheet.Title>
 			<Sheet.Description>Save your flow to a store</Sheet.Description>
 		</Sheet.Header>
 		<div class="grid gap-4 py-4">
