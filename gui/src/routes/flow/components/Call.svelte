@@ -22,7 +22,7 @@
 	checkAvailable();
 </script>
 
-<Node useDefaults {id} let:grabHandle let:selected position={{ x, y }}>
+<Node useDefaults {id} let:grabHandle let:selected>
 	<div class="nodeWrapper" use:grabHandle style="max-width:80em">
 		<div>
 			<Anchor id="{id}_input" input direction="west" nodeConnect />
@@ -149,27 +149,15 @@
 </Node>
 
 <style>
-	.nodeWrapper {
-		box-sizing: border-box;
-		width: fit-content;
-		border-radius: 8px;
-		height: fit-content;
-		position: relative;
-		pointer-events: auto;
-		display: flex;
-		flex-direction: column;
-		padding: 1px;
-		gap: 10px;
-	}
 
 	.input {
 		position: absolute;
-		left: -16px;
 	}
 
 	.output {
 		position: absolute;
-		right: -14px;
+		top:0px;
+		right: 0px;
 	}
 
 	[contenteditable][placeholder]:empty:before {
