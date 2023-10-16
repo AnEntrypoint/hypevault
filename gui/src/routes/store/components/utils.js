@@ -23,9 +23,6 @@ export function isTask (items) {
 		if (typeof i.after != 'string') {
 			return false;
 		}
-		if (!Array.isArray(items)) {
-			return false;
-		}
 		if (typeof i.sub != 'object') {
 			return false;
 		}
