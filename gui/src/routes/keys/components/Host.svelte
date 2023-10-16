@@ -51,9 +51,9 @@
 			})
 		).json();
 		const key = keyFetch;
-
+	
 		const sub = await (
-			await fetch(`http://localhost:3011/vault/getSub/call-${nodename}`, {
+			await fetch(`http://localhost:3011/vault/getSub/call-${keyName}`, {
 				method: 'POST',
 				body: JSON.stringify({ key }),
 				headers: {
@@ -63,7 +63,73 @@
 		).json();
 		console.log({ sourceData });
 		const nodeFetch = await (
-			await fetch(`http://localhost:3011/vault/startNode/` + nodename, {
+			await fetch(`http://localhost:3011/vault/startNode/` + keyName, {
+				method: 'POST',
+				body: JSON.stringify({ hostKey: { publicKey: host }, sub, env: sourceData }),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+		).json();
+		return nodeFetch;
+	};
+</script>
+
+	let sourceData = {};
+
+	const saveValue = () => {
+		const output = { ...sourceData };
+		output[newKey] = newValue;
+		sourceData = output;
+		console.log(sourceData);
+	};
+	const deleteValue = (selectedKey) => {
+		console.log('test');
+		const output = { ...sourceData };
+		delete output[selectedKey];
+		sourceData = output;
+		console.log(sourceData);
+	};
+	const getNodes = async (host) => {
+		console.log({ host });
+		const nodesFetch = await (
+			await fetch(`http://localhost:3011/vault/getNodes`, {
+				method: 'POST',
+				body: JSON.stringify({ hostKey: { publicKey: host } }),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+		).json();
+		return nodesFetch;
+	};
+	(async () => {
+		nodes = (await getNodes(host)).nodes;
+	})();
+	const startNode = async () => {
+		const keyFetch = await (
+			await fetch(`http://localhost:3011/vault/getSub/${keyName}`, {
+				method: 'POST',
+				body: JSON.stringify({ key: rootKey }),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+		).json();
+		const key = keyFetch;
+	
+		const sub = await (
+			await fetch(`http://localhost:3011/vault/getSub/call-${keyName}`, {
+				method: 'POST',
+				body: JSON.stringify({ key }),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+		).json();
+		console.log({ sourceData });
+		const nodeFetch = await (
+			await fetch(`http://localhost:3011/vault/startNode/` + keyName, {
 				method: 'POST',
 				body: JSON.stringify({ hostKey: { publicKey: host }, sub, env: sourceData }),
 				headers: {
