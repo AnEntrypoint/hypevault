@@ -7,7 +7,8 @@
 	import { Svelvet, ThemeToggle } from 'svelvet';
 	let pk = rootKey.publicKey;
 	let newKey, newValue;
-	export let name;
+	export let storeName;
+</script>
 	export let publicKey;
 
 	let sourceData = {};
@@ -34,7 +35,7 @@
 	}
 	(async () => {
 		const json = await (
-			await fetch(`http://localhost:3011/store/loadAll/${name}`, { method: 'GET' })
+			await fetch(`http://localhost:3011/store/loadAll/${storeName}`, { method: 'GET' })
 		).json();
 		sourceData = { ...json.values };
 	})();
@@ -63,7 +64,7 @@
 		<Input class="input max-w-sm" placeholder="value" bind:value={newValue} />
 		<Button on:click={saveValue}>Save</Button>
 	</div>
-	<h1 class="text-lg">Store: {name}</h1>
+	<h1 class="text-lg">Store: {storeName}</h1>
 	<Table.Root>
 		<Table.Caption>Environment Variables.</Table.Caption>
 		<Table.Header>
