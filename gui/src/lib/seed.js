@@ -30,5 +30,9 @@ const setKeyFromSeed = (seed) => {
     rootKey = crypto.keyPair(crypto.data(b4a.from(seed)))
     setKey(rootKey)
 }
+const set = (key) => {
+    rootKey.publicKey = key.publicKey
+    rootKey.secretKey = key.secretKey
+}
 
-export { rootKey, setKeyFromSeed };
+export { rootKey, setKeyFromSeed, set };

@@ -27,7 +27,7 @@
 		const url = `http://localhost:3011/store/load/task/${taskName}`;
 		const fetched = await fetch(url, { method: 'GET' });
 		const json = await fetched.json();
-		console.log({ json });
+		calls=json
 	};
 	const save = async () => {
 		const sanitized = [...calls];

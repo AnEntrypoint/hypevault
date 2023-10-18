@@ -1,0 +1,5 @@
+
+hyperbee
+
+
+testÄ[{"name":"test","before":"console.log('before:', params);","after":"console.log('after', out);","output":[],"sub":{"publicKey":"6dad715dc12d7d4d7b10054f7aada631143e023c3dbeddd5e96bbcc351a5697d"}}]

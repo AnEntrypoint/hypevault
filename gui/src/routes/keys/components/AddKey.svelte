@@ -13,9 +13,7 @@
 	}
 </script>
 
-<div>
-    <div class="flex items-center space-x-4 m-4">
+<div class="flex">
 	<Input type="text" bind:value={newKeyName} class="max-w-sm" placeholder="Enter a key name" />
 	<Button on:click={addNewKey}>Add Key</Button>
-    </div>
 </div>

@@ -6,7 +6,7 @@ const dbs = []
 
 const prepDb = async (name) => {
     if (dbs[name]) return dbs[name];
-    const core = new Hypercore('./' + name)
+    const core = new Hypercore('../db/' + name)
     await core.ready()
     const db = new Hyperbee(core, { keyEncoding: 'utf-8', valueEncoding: 'binary' })
     dbs[name] = db;
@@ -19,7 +19,7 @@ const prepDb = async (name) => {
 const init = () => {
 
     const save = async (req, res) => {
-        const db = await prepDb('./' + req.params.db)
+        const db = await prepDb(req.params.db)
         console.log(req.body, req.params)
         await db.put(req.params.name, JSON.stringify(req.body))
         res.write(`{"success":"true"}`)
@@ -28,19 +28,21 @@ const init = () => {
 
     const key = async (req, res) => {
         console.log('key')
-        const db = await prepDb('./' + req.params.db)
-        const out = db.core.key  
-        console.log({publicKey:out.toString('hex')})
-        res.write(JSON.stringify({publicKey:out.toString('hex')}))
-        res.status(200).end() 
+        const db = await prepDb(req.params.db)
+        const out = db.core.key
+        console.log({ publicKey: out.toString('hex') })
+        res.write(JSON.stringify({ publicKey: out.toString('hex') }))
+        res.status(200).end()
     }
     const load = async (req, res) => {
         console.log('load')
-        const db = await prepDb('./' + req.params.db)
+        const db = await prepDb(req.params.db)
+        console.log(req.params.db, 'prepped')
         try {
+            console.log(req.params.name, 'fetching')
             const lookup = await db.get(req.params.name);
-            console.log(lookup.value.toString('utf-8'))
-            res.write(lookup.value)
+            console.log(lookup)
+            res.write(lookup ? lookup.value : `{ "error": "not found" }`)
             res.status(200).end();
         } catch (e) {
             console.error(e);
@@ -52,12 +54,12 @@ const init = () => {
     };
     const loadAll = async (req, res) => {
         console.log('loadAll')
-        const db = await prepDb('./' + req.params.db)
+        const db = await prepDb(req.params.db)
         try {
             const lookup = { values: {} };
             for await (const node of db.createReadStream()) {
                 console.log(node)
-                lookup.values[node.key] =node.value.toString()
+                lookup.values[node.key] = node.value.toString()
             }
             console.log(lookup)
             res.write(JSON.stringify(lookup))
