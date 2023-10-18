@@ -68,6 +68,7 @@
 				/></svg
 			>Stores
 		</a>
+		<a href="/configuration"> ⚙️ Configuration </a>
 	</nav>
 	<div class="w-full h-full">
 		<slot />

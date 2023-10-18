@@ -37,12 +37,12 @@
 						{#each keys as key, i}
 							<Select.Item
 								on:click={() => {
-									selectedKey = key;
-									selectedKeyStore.set(key);
+									selectedKey = key.name;
+									selectedKeyStore.set(key.name);
 								}}
-								value={key}
+								value={key.name}
 							>
-								{key}
+								{key.name}
 							</Select.Item>
 						{/each}
 					</Select.Content>

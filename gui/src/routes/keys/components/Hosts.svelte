@@ -2,6 +2,7 @@
 	import * as Accordion from '$lib/components/ui/accordion';
 	import { Skeleton } from '$lib/components/ui/skeleton';
 	import Host from './Host.svelte';
+	import * as Card from '$lib/components/ui/card';
 	let hosts;
 
 	export let keyName = '';
@@ -41,14 +42,6 @@
 </script>
 
 <div>
-	<h2 class="text-lg font-semibold mb-4">Hosts:</h2>
-	Start a host:
-	{#if sub && sub.publicKey}
-		<code class="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
-			npx hypehost {sub.publicKey}
-		</code>
-	{/if}
-
 	{#if !hosts}
 		<div class="flex items-center space-x-4 m-4">
 			<Skeleton class="h-4 w-4 rounded-full" />
@@ -63,10 +56,18 @@
 		<Accordion.Root class="variant-filled-surface rounded-lg">
 			{#each hosts as host, index}
 				<Accordion.Item value={host}>
-					<Accordion.Trigger>{host}</Accordion.Trigger>
-					<Accordion.Content>
-						<Host {host} {keyName} {rootKey} />
-					</Accordion.Content>
+					<Card.Root>
+						<Card.Header>
+							<Accordion.Trigger><Card.Title>Remote host: {index}</Card.Title></Accordion.Trigger>
+
+							<Card.Description>{host}</Card.Description>
+						</Card.Header>
+						<Card.Content>
+							<Accordion.Content>
+								<Host {host} {keyName} {rootKey} />
+							</Accordion.Content>
+						</Card.Content>
+					</Card.Root>
 				</Accordion.Item>
 			{/each}
 		</Accordion.Root>
