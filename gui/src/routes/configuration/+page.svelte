@@ -12,8 +12,8 @@
 	};
 	const save = (input) => {
 		const data = JSON.parse(input);
-		keys.set(data.keys);
-		stores.set(data.stores);
+		keys.set(JSON.stringify(data.keys));
+		stores.set(JSON.stringify(data.stores));
 		set(data.rootKey);
 		restorePaste = '';
 	};
