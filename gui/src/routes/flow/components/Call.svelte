@@ -11,10 +11,10 @@
 	const checkAvailable = (v) => {
 		isAvailable = -1;
 		clearTimeout(timer);
-		console.log('calling find', `http://localhost:3011/run/key/find/${sub.publicKey}`);
+		console.log('calling find', `/run/key/find/${sub.publicKey}`);
 		timer = setTimeout(async () => {
 			console.log({ sub });
-			const url = `http://localhost:3011/run/key/find/${sub.publicKey}`;
+			const url = `/run/key/find/${sub.publicKey}`;
 			const found = await (await fetch(url)).json();
 			isAvailable = found ? found.length : 0;
 		}, 750);

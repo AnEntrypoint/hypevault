@@ -50,6 +50,7 @@ app.use((function (req, res, next) {
 }))
 const vault = nodes(node)
 console.log(vault)
+app.use(express.static('public'))
 app.use("/vault", vault)
 app.use("/task", tasks(node))
 app.use("/store", stores())

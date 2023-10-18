@@ -33,9 +33,7 @@
 		return true;
 	}
 	(async () => {
-		const json = await (
-			await fetch(`http://localhost:3011/store/loadAll/${name}`, { method: 'GET' })
-		).json();
+		const json = await (await fetch(`/store/loadAll/${name}`, { method: 'GET' })).json();
 		sourceData = { ...json.values };
 	})();
 	const deleteValue = (selectedKey) => {

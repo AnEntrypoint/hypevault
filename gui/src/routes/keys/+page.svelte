@@ -14,7 +14,7 @@
 
 	async function addNewKey(newKeyName) {
 		const sub = await (
-			await fetch(`http://localhost:3011/vault/getSub/${newKeyName}`, {
+			await fetch(`/vault/getSub/${newKeyName}`, {
 				method: 'POST',
 				body: JSON.stringify({ key: rootKey }),
 				headers: {
@@ -31,7 +31,10 @@
 	<Card.Root>
 		<Card.Header>
 			<Card.Title>Networks</Card.Title>
-			<Card.Description><div class="pb-2">Add network:</div><AddKey addKey={addNewKey} /></Card.Description>
+			<Card.Description
+				><div class="pb-2">Add network:</div>
+				<AddKey addKey={addNewKey} /></Card.Description
+			>
 		</Card.Header>
 		<Card.Content>
 			<Accordion.Root>

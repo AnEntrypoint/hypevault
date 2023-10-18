@@ -1,6 +1,6 @@
 {
-    "name": "svelte-tailwind-gui",
-    "version": "1.0.0",
+    "name": "hypervault",
+    "version": "0.0.0",
     "scripts": {},
     "bin":"",
     "dependencies": {

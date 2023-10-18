@@ -29,7 +29,7 @@
 	const getNodes = async (host) => {
 		console.log({ host });
 		const nodesFetch = await (
-			await fetch(`http://localhost:3011/vault/getNodes`, {
+			await fetch(`/vault/getNodes`, {
 				method: 'POST',
 				body: JSON.stringify({ hostKey: { publicKey: host } }),
 				headers: {
@@ -44,7 +44,7 @@
 	})();
 	const startNode = async () => {
 		const keyFetch = await (
-			await fetch(`http://localhost:3011/vault/getSub/${keyName}`, {
+			await fetch(`/vault/getSub/${keyName}`, {
 				method: 'POST',
 				body: JSON.stringify({ key: rootKey }),
 				headers: {
@@ -56,7 +56,7 @@
 
 		console.log({ sourceData });
 		const nodeFetch = await (
-			await fetch(`http://localhost:3011/vault/startNode/` + nodename, {
+			await fetch(`/vault/startNode/` + nodename, {
 				method: 'POST',
 				body: JSON.stringify({ hostKey: { publicKey: host }, sub, env: sourceData }),
 				headers: {

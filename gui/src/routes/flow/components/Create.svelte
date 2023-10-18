@@ -11,7 +11,7 @@
 		console.log(selectedKey.value);
 		const newcalls = [...calls];
 		const key = await (
-			await fetch(`http://localhost:3011/vault/getSub/${selectedKey.value}`, {
+			await fetch(`/vault/getSub/${selectedKey.value}`, {
 				method: 'POST',
 				body: JSON.stringify({ key: { publicKey: pk } }),
 				headers: {
@@ -20,7 +20,7 @@
 			})
 		).json();
 		const sub = await (
-			await fetch(`http://localhost:3011/vault/getSub/call-${newName}`, {
+			await fetch(`/vault/getSub/call-${newName}`, {
 				method: 'POST',
 				body: JSON.stringify({ key }),
 				headers: {

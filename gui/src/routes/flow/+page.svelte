@@ -22,7 +22,7 @@
 
 	const run = (calls) => {
 		const ipcCall = async (pk, name, params) => {
-			const subFetch = await fetch(`http://localhost:3011/vault/getSub/${name}`, {
+			const subFetch = await fetch(`/vault/getSub/${name}`, {
 				method: 'POST',
 				body: JSON.stringify({ key: { publicKey: pk } }),
 				headers: {
@@ -31,7 +31,7 @@
 			});
 			console.log('fetched');
 			const sub = await subFetch.json();
-			const url = `http://localhost:3011/run/key/${sub.publicKey}`;
+			const url = `/run/key/${sub.publicKey}`;
 			console.log({ url });
 			const fetched = await fetch(url, {
 				headers: { 'Content-Type': 'application/json' },
@@ -44,7 +44,7 @@
 		runCall(0, calls, {}, pk, ipcCall, () => refresh(calls));
 	};
 	const runOnServer = async (name) => {
-		const url = `http://localhost:3011/task/run/${pk}/${name}`;
+		const url = `/task/run/${pk}/${name}`;
 
 		const fetched = await fetch(url, {
 			headers: { 'Content-Type': 'application/json' },

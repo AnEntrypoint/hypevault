@@ -18,9 +18,7 @@
 		}
 	});
 	const addNewStore = async () => {
-		const { publicKey } = await (
-			await fetch(`http://localhost:3011/store/key/${newStoreName}`)
-		).json();
+		const { publicKey } = await (await fetch(`/store/key/${newStoreName}`)).json();
 		const newStores = [...stores, { name: newStoreName, publicKey }];
 		storedata.set(JSON.stringify(newStores));
 		console.log(stores);

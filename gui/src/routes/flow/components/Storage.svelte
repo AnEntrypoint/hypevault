@@ -24,10 +24,10 @@
 
 	const load = async () => {
 		console.log('load');
-		const url = `http://localhost:3011/store/load/task/${taskName}`;
+		const url = `/store/load/task/${taskName}`;
 		const fetched = await fetch(url, { method: 'GET' });
 		const json = await fetched.json();
-		calls=json
+		calls = json;
 	};
 	const save = async () => {
 		const sanitized = [...calls];
@@ -36,7 +36,7 @@
 			delete a.stdout;
 			delete a.stderr;
 		});
-		const url = `http://localhost:3011/store/save/task/${taskName}`;
+		const url = `/store/save/task/${taskName}`;
 		const fetched = await (
 			await fetch(url, {
 				headers: { 'Content-Type': 'application/json' },

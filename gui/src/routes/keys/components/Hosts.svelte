@@ -11,7 +11,7 @@
 
 	(async () => {
 		sub = await (
-			await fetch(`http://localhost:3011/vault/getSub/${keyName}`, {
+			await fetch(`/vault/getSub/${keyName}`, {
 				method: 'POST',
 				body: JSON.stringify({ key: rootKey }),
 				headers: {
@@ -26,7 +26,7 @@
 			// Make a call to Vault to assign the string as a name
 
 			const data = await (
-				await fetch(`http://localhost:3011/vault/findHosts`, {
+				await fetch(`/vault/findHosts`, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json'
