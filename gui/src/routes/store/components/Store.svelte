@@ -9,7 +9,6 @@
 	let pk = rootKey.publicKey;
 	let newKey, newValue;
 	export let name;
-	export let publicKey;
 
 	let sourceData = {};
 	function isJSON(item) {

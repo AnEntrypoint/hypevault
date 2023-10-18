@@ -5,7 +5,7 @@
 	import { json } from '@codemirror/lang-json';
 	import { oneDark } from '@codemirror/theme-one-dark';
 
-	export let name, before, after, id, x, y, output, stdout, stderr, result, pk, remove, sub;
+	export let name, before, after, id, x, y, output, stdout, stderr, result, remove, sub;
 	let isAvailable = 0;
 	let timer;
 	const checkAvailable = (v) => {
@@ -149,14 +149,9 @@
 </Node>
 
 <style>
-
-	.input {
-		position: absolute;
-	}
-
 	.output {
 		position: absolute;
-		top:0px;
+		top: 0px;
 		right: 0px;
 	}
 
